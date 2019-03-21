@@ -1,16 +1,13 @@
 package com.kamtayupov.koviplan
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.FrameLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -21,10 +18,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        supportFragmentManager.beginTransaction().add(R.id.chapter_one_list, TaskFragment.newInstance(arrayListOf("one", "two", "three"))).commit()
-        supportFragmentManager.beginTransaction().add(R.id.chapter_two_list, TaskFragment.newInstance(arrayListOf("four", "five", "six"))).commit()
-        supportFragmentManager.beginTransaction().add(R.id.chapter_three_list, TaskFragment.newInstance(arrayListOf("seven", "eight", "nine"))).commit()
-        supportFragmentManager.beginTransaction().add(R.id.chapter_four_list, TaskFragment.newInstance(arrayListOf("ten", "eleven", "twelve"))).commit()
+        supportFragmentManager.beginTransaction().add(R.id.fragment_container, ChaptersFragment()).commit()
 
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
