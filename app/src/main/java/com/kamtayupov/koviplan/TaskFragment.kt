@@ -14,7 +14,7 @@ class TaskFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val list = arguments?.getStringArrayList(KEY_LIST) ?: return
+        val list: ArrayList<Task> = arguments?.getSerializable(KEY_TASK_LIST) as ArrayList<Task>
         (view as RecyclerView).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = TaskAdapter(list)
@@ -22,12 +22,12 @@ class TaskFragment : Fragment() {
     }
 
     companion object {
-        private const val KEY_LIST = "TaskFragment.KeyList"
+        private const val KEY_TASK_LIST = "TaskFragment.KeyTaskList"
 
-        fun newInstance(list: ArrayList<String>): TaskFragment {
+        fun newInstance(list: ArrayList<Task>): TaskFragment {
             return TaskFragment().apply {
                 arguments = Bundle().apply {
-                    putStringArrayList(KEY_LIST, list)
+                    putSerializable(KEY_TASK_LIST, list)
                 }
             }
         }

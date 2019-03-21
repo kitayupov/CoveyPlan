@@ -19,7 +19,11 @@ class ChaptersFragment : Fragment() {
                 R.id.chapter_three_list,
                 R.id.chapter_four_list
             ).forEach {
-                beginTransaction().add(it, TaskFragment.newInstance(arrayListOf("one", "two", "three"))).commit()
+                val list = ArrayList<Task>()
+                for (c in 'a'..'z') {
+                    list.add(Task(c.toString()))
+                }
+                beginTransaction().add(it, TaskFragment.newInstance(list)).commit()
             }
         }
     }

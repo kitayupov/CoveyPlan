@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-class TaskAdapter(private val list: ArrayList<String>) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+class TaskAdapter(private val list: ArrayList<Task>) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ViewHolder {
         return ViewHolder(TextView(parent.context))
@@ -18,8 +18,8 @@ class TaskAdapter(private val list: ArrayList<String>) : RecyclerView.Adapter<Ta
     override fun getItemCount() = list.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(s: String) {
-            (itemView as TextView).text = s
+        fun bind(task: Task) {
+            (itemView as TextView).text = task.name
         }
     }
 }
