@@ -14,7 +14,7 @@ class TaskFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val list: ArrayList<Task> = arguments?.getSerializable(KEY_TASK_LIST) as ArrayList<Task>
+        val list = arguments?.getSerializable(KEY_TASK_LIST) as ArrayList<Task>
         (view as RecyclerView).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = TaskAdapter(list)
