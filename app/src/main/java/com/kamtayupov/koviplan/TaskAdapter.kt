@@ -6,11 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 
-class TaskAdapter(private val list: ArrayList<Task>) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+class TaskAdapter(
+    private val list: ArrayList<Task>,
+    private val size: Size
+) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.layout_list_item_task, parent, false)
+        val layoutResId = when (size) {
+            Size.SMALL -> R.layout.layout_list_item_task_small
+            Size.NORMAL -> R.layout.layout_list_item_task
+        }
+        val view = inflater.inflate(layoutResId, parent, false)
         return ViewHolder(view)
     }
 
@@ -26,5 +33,9 @@ class TaskAdapter(private val list: ArrayList<Task>) : RecyclerView.Adapter<Task
         fun bind(task: Task) {
             name.text = task.name
         }
+    }
+
+    enum class Size {
+        SMALL, NORMAL
     }
 }

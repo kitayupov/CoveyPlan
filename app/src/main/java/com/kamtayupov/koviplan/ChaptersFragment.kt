@@ -23,7 +23,7 @@ class ChaptersFragment : Fragment() {
                 for (c in 'a'..'z') {
                     list.add(Task(c.toString()))
                 }
-                beginTransaction().add(it, TaskFragment.newInstance(list)).commit()
+                beginTransaction().add(it, TaskFragment.newInstance(list, TaskAdapter.Size.SMALL)).commit()
             }
         }
     }
