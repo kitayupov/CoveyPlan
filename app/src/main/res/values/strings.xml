@@ -12,4 +12,6 @@
     <string name="title_type_third">Third</string>
     <string name="title_type_fourth">Fourth</string>
     <string name="title_edit_task">Add New Task</string>
+    <string name="label_task_title">Title</string>
+    <string name="label_task_description">Description</string>
 </resources>

@@ -6,29 +6,44 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <TextView
-            android:id="@+id/task_name_text"
+    <android.support.design.widget.TextInputLayout
+            android:id="@+id/title_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@android:style/TextAppearance.Material.Title"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Task Title"/>
+            android:hint="@string/label_task_title">
 
-    <TextView
-            android:id="@+id/task_description_text"
+        <android.support.design.widget.TextInputEditText
+                android:id="@+id/task_name_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@android:style/TextAppearance.Material.Title"
+                tools:text="Task Title"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+            android:id="@+id/description_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
             android:layout_marginTop="16dp"
-            android:lines="3"
-            app:layout_constraintStart_toStartOf="@+id/task_name_text"
-            app:layout_constraintEnd_toEndOf="@+id/task_name_text"
-            app:layout_constraintTop_toBottomOf="@+id/task_name_text"
-            tools:text="Task Description"/>
+            app:layout_constraintStart_toStartOf="@+id/title_layout"
+            app:layout_constraintEnd_toEndOf="@+id/title_layout"
+            app:layout_constraintTop_toBottomOf="@+id/title_layout"
+            android:hint="@string/label_task_description">
+
+        <android.support.design.widget.TextInputEditText
+                android:id="@+id/task_description_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+                tools:text="Task Description"/>
+
+    </android.support.design.widget.TextInputLayout>
 
 </android.support.constraint.ConstraintLayout>
