@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             TaskFragment.getArguments(
                 ArrayList<Task>().apply {
                     for (c in 'a'..'z') {
-                        add(Task(c.toString()))
+                        add(Task(c.toString(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"))
                     }
                 },
                 type,

@@ -16,6 +16,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="TextView"/>
+            tools:text="TextView" android:textAppearance="@android:style/TextAppearance.Material.Subhead"/>
 
 </android.support.constraint.ConstraintLayout>

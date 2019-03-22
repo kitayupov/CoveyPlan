@@ -17,7 +17,7 @@ class ChaptersFragment : Fragment() {
                 .forEach {
                     val list = ArrayList<Task>()
                     for (c in 'a'..'z') {
-                        list.add(Task(c.toString()))
+                        list.add(Task(c.toString(), "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"))
                     }
                     beginTransaction().add(it.layoutResId, TaskFragment.newInstance(list, it.type, TaskAdapter.Size.SMALL))
                         .commit()

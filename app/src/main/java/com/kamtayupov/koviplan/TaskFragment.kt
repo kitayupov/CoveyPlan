@@ -11,6 +11,7 @@ import com.kamtayupov.koviplan.TaskAdapter.Size.NORMAL
 import com.kamtayupov.koviplan.TaskAdapter.Size.SMALL
 
 class TaskFragment : Fragment() {
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_tasks, container, false)
     }
