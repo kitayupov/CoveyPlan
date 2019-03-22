@@ -14,4 +14,6 @@
     <string name="title_edit_task">Add New Task</string>
     <string name="label_task_title">Title</string>
     <string name="label_task_description">Description</string>
+    <string name="label_task_date">Date</string>
+    <string name="label_task_importance">Importance</string>
 </resources>
