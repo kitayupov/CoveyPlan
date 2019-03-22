@@ -9,10 +9,11 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.kamtayupov.koviplan.list.TaskAdapter.Size.NORMAL
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.editor.EditTaskFragment
+import com.kamtayupov.koviplan.list.TaskAdapter.Size.NORMAL
 import com.kamtayupov.koviplan.list.TaskFragment
+import com.kamtayupov.koviplan.repository.Repository
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -95,16 +96,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navController.navigate(
             R.id.taskFragment,
             TaskFragment.getArguments(
-                ArrayList<Task>().apply {
-                    for (c in 'a'..'z') {
-                        add(
-                            Task(
-                                c.toString(),
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
-                            )
-                        )
-                    }
-                },
+                Repository.getTasks() as ArrayList<Task>,
                 type,
                 NORMAL
             )

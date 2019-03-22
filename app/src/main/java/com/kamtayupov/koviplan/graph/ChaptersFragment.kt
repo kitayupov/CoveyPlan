@@ -10,6 +10,7 @@ import com.kamtayupov.koviplan.list.TaskFragment.Type
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.list.TaskAdapter
 import com.kamtayupov.koviplan.list.TaskFragment
+import com.kamtayupov.koviplan.repository.Repository
 
 class ChaptersFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -21,18 +22,9 @@ class ChaptersFragment : Fragment() {
             supportFragmentManager?.apply {
                 Chapter.values()
                     .forEach {
-                        val list = ArrayList<Task>()
-                        for (c in 'a'..'z') {
-                            list.add(
-                                Task(
-                                    c.toString(),
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua"
-                                )
-                            )
-                        }
                         beginTransaction().add(
                             it.layoutResId,
-                            TaskFragment.newInstance(list, it.type, TaskAdapter.Size.SMALL)
+                            TaskFragment.newInstance(Repository.getTasks() as ArrayList<Task>, it.type, TaskAdapter.Size.SMALL)
                         )
                             .commit()
                     }
