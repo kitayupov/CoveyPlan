@@ -6,4 +6,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="title_chapters">Chapters</string>
+    <string name="title_type_first">First</string>
+    <string name="title_type_second">Second</string>
+    <string name="title_type_third">Third</string>
+    <string name="title_type_fourth">Fourth</string>
+    <string name="title_edit_task">Add New Task</string>
 </resources>

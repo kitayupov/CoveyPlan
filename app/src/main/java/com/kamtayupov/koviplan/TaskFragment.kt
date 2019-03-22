@@ -37,6 +37,11 @@ class TaskFragment : Fragment() {
                 }
             )
         }
+        when (size as TaskAdapter.Size) {
+            NORMAL -> activity?.setTitle((type as Type).nameResId)
+            else -> {
+            }
+        }
     }
 
     companion object {
@@ -57,7 +62,10 @@ class TaskFragment : Fragment() {
         }
     }
 
-    enum class Type {
-        FIRST, SECOND, THIRD, FOURTH
+    enum class Type(val nameResId: Int) {
+        FIRST(R.string.title_type_first),
+        SECOND(R.string.title_type_second),
+        THIRD(R.string.title_type_third),
+        FOURTH(R.string.title_type_fourth)
     }
 }

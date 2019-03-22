@@ -17,22 +17,20 @@ class EditTaskFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val task = arguments?.getSerializable(KEY_TASK) as Task
-        println(task)
-        nameTextView = view.findViewById(R.id.task_name_text)
-        descriptionTextView = view.findViewById(R.id.task_description_text)
-        nameTextView.text = task.name
-        descriptionTextView.text = task.description
+        val task = arguments?.getSerializable(KEY_TASK)
+        if (task is Task) {
+            nameTextView = view.findViewById(R.id.task_name_text)
+            descriptionTextView = view.findViewById(R.id.task_description_text)
+            nameTextView.text = task.name
+            descriptionTextView.text = task.description
+            activity?.title = task.name
+        } else {
+            activity?.setTitle(R.string.title_edit_task)
+        }
     }
 
     companion object {
         private const val KEY_TASK = "EditTaskFragment.KeyTask"
-
-        fun newInstance(task: Task): EditTaskFragment {
-            return EditTaskFragment().apply {
-                arguments = getArguments(task)
-            }
-        }
 
         fun getArguments(task: Task) = Bundle().apply {
             putSerializable(KEY_TASK, task)
