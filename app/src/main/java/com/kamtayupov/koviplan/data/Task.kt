@@ -1,4 +1,4 @@
-package com.kamtayupov.koviplan
+package com.kamtayupov.koviplan.data
 
 import java.io.Serializable
 import java.util.*

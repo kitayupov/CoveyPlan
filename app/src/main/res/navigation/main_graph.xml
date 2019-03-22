@@ -3,15 +3,15 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/main_graph" app:startDestination="@id/chaptersFragment">
 
-    <fragment android:id="@+id/chaptersFragment" android:name="com.kamtayupov.koviplan.ChaptersFragment"
+    <fragment android:id="@+id/chaptersFragment" android:name="com.kamtayupov.koviplan.graph.ChaptersFragment"
               android:label="ChaptersFragment">
         <action android:id="@+id/action_chaptersFragment_to_taskFragment" app:destination="@id/taskFragment"/>
         <action android:id="@+id/action_chaptersFragment_to_editTaskFragment" app:destination="@id/editTaskFragment"/>
     </fragment>
-    <fragment android:id="@+id/taskFragment" android:name="com.kamtayupov.koviplan.TaskFragment"
+    <fragment android:id="@+id/taskFragment" android:name="com.kamtayupov.koviplan.list.TaskFragment"
               android:label="TaskFragment">
         <action android:id="@+id/action_taskFragment_to_editTaskFragment" app:destination="@id/editTaskFragment"/>
     </fragment>
-    <fragment android:id="@+id/editTaskFragment" android:name="com.kamtayupov.koviplan.EditTaskFragment"
+    <fragment android:id="@+id/editTaskFragment" android:name="com.kamtayupov.koviplan.editor.EditTaskFragment"
               android:label="EditTaskFragment"/>
 </navigation>

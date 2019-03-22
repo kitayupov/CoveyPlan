@@ -1,11 +1,15 @@
-package com.kamtayupov.koviplan
+package com.kamtayupov.koviplan.graph
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.kamtayupov.koviplan.TaskFragment.Type
+import com.kamtayupov.koviplan.R
+import com.kamtayupov.koviplan.list.TaskFragment.Type
+import com.kamtayupov.koviplan.data.Task
+import com.kamtayupov.koviplan.list.TaskAdapter
+import com.kamtayupov.koviplan.list.TaskFragment
 
 class ChaptersFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

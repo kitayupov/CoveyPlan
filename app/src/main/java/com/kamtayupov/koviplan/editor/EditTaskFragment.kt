@@ -1,4 +1,4 @@
-package com.kamtayupov.koviplan
+package com.kamtayupov.koviplan.editor
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
+import com.kamtayupov.koviplan.R
+import com.kamtayupov.koviplan.data.Task
 
 class EditTaskFragment : Fragment() {
 

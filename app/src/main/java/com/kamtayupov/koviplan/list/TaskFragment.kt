@@ -1,4 +1,4 @@
-package com.kamtayupov.koviplan
+package com.kamtayupov.koviplan.list
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -7,8 +7,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.kamtayupov.koviplan.TaskAdapter.Size.NORMAL
-import com.kamtayupov.koviplan.TaskAdapter.Size.SMALL
+import com.kamtayupov.koviplan.MainActivity
+import com.kamtayupov.koviplan.R
+import com.kamtayupov.koviplan.list.TaskAdapter.Size.NORMAL
+import com.kamtayupov.koviplan.list.TaskAdapter.Size.SMALL
+import com.kamtayupov.koviplan.data.Task
 
 class TaskFragment : Fragment() {
 
@@ -51,7 +54,7 @@ class TaskFragment : Fragment() {
 
         fun newInstance(list: ArrayList<Task>, type: Type, size: TaskAdapter.Size): TaskFragment {
             return TaskFragment().apply {
-                arguments = Companion.getArguments(list, type, size)
+                arguments = getArguments(list, type, size)
             }
         }
 
