@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.kamtayupov.koviplan.TaskAdapter.Size.NORMAL
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -87,7 +88,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun onChapterSelected() {
+    fun onChapterSelected(type: TaskFragment.Type) {
         navController.navigate(
             R.id.taskFragment,
             TaskFragment.getArguments(
@@ -96,7 +97,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                         add(Task(c.toString()))
                     }
                 },
-                TaskAdapter.Size.NORMAL
+                type,
+                NORMAL
             )
         )
     }

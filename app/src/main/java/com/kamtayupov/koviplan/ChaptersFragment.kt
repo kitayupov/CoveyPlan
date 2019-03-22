@@ -13,18 +13,22 @@ class ChaptersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         activity?.supportFragmentManager?.apply {
-            arrayOf(
-                R.id.chapter_one_list,
-                R.id.chapter_two_list,
-                R.id.chapter_three_list,
-                R.id.chapter_four_list
-            ).forEach {
-                val list = ArrayList<Task>()
-                for (c in 'a'..'z') {
-                    list.add(Task(c.toString()))
+            Chapter.values()
+                .forEach {
+                    val list = ArrayList<Task>()
+                    for (c in 'a'..'z') {
+                        list.add(Task(c.toString()))
+                    }
+                    beginTransaction().add(it.layoutResId, TaskFragment.newInstance(list, it.type, TaskAdapter.Size.SMALL))
+                        .commit()
                 }
-                beginTransaction().add(it, TaskFragment.newInstance(list, TaskAdapter.Size.SMALL)).commit()
-            }
         }
+    }
+
+    enum class Chapter(val type: TaskFragment.Type, val layoutResId: Int) {
+        FIRST(TaskFragment.Type.FIRST, R.id.chapter_one_list),
+        SECOND(TaskFragment.Type.SECOND, R.id.chapter_two_list),
+        THIRD(TaskFragment.Type.THIRD, R.id.chapter_three_list),
+        FOURTH(TaskFragment.Type.FOURTH, R.id.chapter_four_list)
     }
 }
