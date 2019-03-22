@@ -6,7 +6,12 @@
     <fragment android:id="@+id/chaptersFragment" android:name="com.kamtayupov.koviplan.ChaptersFragment"
               android:label="ChaptersFragment">
         <action android:id="@+id/action_chaptersFragment_to_taskFragment" app:destination="@id/taskFragment"/>
+        <action android:id="@+id/action_chaptersFragment_to_editTaskFragment" app:destination="@id/editTaskFragment"/>
     </fragment>
     <fragment android:id="@+id/taskFragment" android:name="com.kamtayupov.koviplan.TaskFragment"
-              android:label="TaskFragment"/>
+              android:label="TaskFragment">
+        <action android:id="@+id/action_taskFragment_to_editTaskFragment" app:destination="@id/editTaskFragment"/>
+    </fragment>
+    <fragment android:id="@+id/editTaskFragment" android:name="com.kamtayupov.koviplan.EditTaskFragment"
+              android:label="EditTaskFragment"/>
 </navigation>

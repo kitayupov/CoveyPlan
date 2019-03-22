@@ -2,7 +2,6 @@ package com.kamtayupov.koviplan
 
 import android.os.Bundle
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -24,9 +23,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        fab.setOnClickListener {
+            navController.navigate(R.id.editTaskFragment)
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -100,6 +98,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 },
                 TaskAdapter.Size.NORMAL
             )
+        )
+    }
+
+    fun onTaskSelected(task: Task) {
+        navController.navigate(
+            R.id.editTaskFragment,
+            EditTaskFragment.getArguments(task)
         )
     }
 }

@@ -24,7 +24,7 @@ class TaskAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position], activity as MainActivity)
+        holder.bind(list[position], activity as MainActivity, size)
     }
 
     override fun getItemCount() = list.size
@@ -32,10 +32,19 @@ class TaskAdapter(
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val name = itemView.findViewById<TextView>(R.id.name_text)
 
-        fun bind(task: Task, activity: MainActivity) {
+        fun bind(
+            task: Task,
+            activity: MainActivity,
+            size: Size
+        ) {
             name.text = task.name
             itemView.setOnClickListener {
-                activity.onChapterSelected()
+                activity.apply {
+                    when (size) {
+                        Size.SMALL -> onChapterSelected()
+                        Size.NORMAL -> onTaskSelected(task)
+                    }
+                }
             }
         }
     }
