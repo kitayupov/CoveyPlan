@@ -18,21 +18,23 @@ class TaskFragment : Fragment() {
         val size = arguments?.getSerializable(KEY_LIST_SIZE) as TaskAdapter.Size
         (view as RecyclerView).apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = TaskAdapter(list, size)
+            adapter = TaskAdapter(list, size, activity)
         }
     }
 
     companion object {
         private const val KEY_TASK_LIST = "TaskFragment.KeyTaskList"
-        private const val KEY_LIST_SIZE = "TaskFragment.KeyTaskSize"
+        private const val KEY_LIST_SIZE = "TaskFragment.KeyListSize"
 
         fun newInstance(list: ArrayList<Task>, size: TaskAdapter.Size): TaskFragment {
             return TaskFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(KEY_TASK_LIST, list)
-                    putSerializable(KEY_LIST_SIZE, size)
-                }
+                arguments = Companion.getArguments(list, size)
             }
+        }
+
+        fun getArguments(list: ArrayList<Task>, size: TaskAdapter.Size) = Bundle().apply {
+            putSerializable(KEY_TASK_LIST, list)
+            putSerializable(KEY_LIST_SIZE, size)
         }
     }
 }

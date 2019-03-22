@@ -88,4 +88,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    fun onChapterSelected() {
+        navController.navigate(
+            R.id.taskFragment,
+            TaskFragment.getArguments(
+                ArrayList<Task>().apply {
+                    for (c in 'a'..'z') {
+                        add(Task(c.toString()))
+                    }
+                },
+                TaskAdapter.Size.NORMAL
+            )
+        )
+    }
 }
