@@ -96,7 +96,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navController.navigate(
             R.id.taskFragment,
             TaskFragment.getArguments(
-                Repository.getTasks() as ArrayList<Task>,
                 taskType,
                 NORMAL
             )

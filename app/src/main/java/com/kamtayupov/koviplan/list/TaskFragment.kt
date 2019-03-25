@@ -1,5 +1,6 @@
 package com.kamtayupov.koviplan.list
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -9,24 +10,23 @@ import android.view.View
 import android.view.ViewGroup
 import com.kamtayupov.koviplan.MainActivity
 import com.kamtayupov.koviplan.R
+import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.list.TaskAdapter.Size.NORMAL
 import com.kamtayupov.koviplan.list.TaskAdapter.Size.SMALL
-import com.kamtayupov.koviplan.data.Task
+import com.kamtayupov.koviplan.repository.Repository
 
 class TaskFragment : Fragment() {
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_tasks, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val list = arguments?.getSerializable(KEY_TASK_LIST) ?: return
         val type = arguments?.getSerializable(KEY_LIST_TYPE) ?: return
         val size = arguments?.getSerializable(KEY_LIST_SIZE) ?: return
-        (view as RecyclerView).apply {
+        val recyclerView = view as RecyclerView
+        recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = TaskAdapter(
-                list as ArrayList<Task>,
                 size as TaskAdapter.Size,
                 object : TaskAdapter.OnTaskSelectionListener {
                     override fun onTaskSelected(task: Task) {
@@ -40,6 +40,11 @@ class TaskFragment : Fragment() {
                 }
             )
         }
+        Repository.tasks.observe(this, Observer {
+            if (it != null) {
+                (recyclerView.adapter as TaskAdapter).setList(it)
+            }
+        })
         when (size as TaskAdapter.Size) {
             NORMAL -> activity?.setTitle((type as TaskType).nameResId)
             else -> {
@@ -48,18 +53,16 @@ class TaskFragment : Fragment() {
     }
 
     companion object {
-        private const val KEY_TASK_LIST = "TaskFragment.KeyTaskList"
         private const val KEY_LIST_TYPE = "TaskFragment.KeyListType"
         private const val KEY_LIST_SIZE = "TaskFragment.KeyListSize"
 
-        fun newInstance(list: ArrayList<Task>, taskType: TaskType, size: TaskAdapter.Size): TaskFragment {
+        fun newInstance(taskType: TaskType, size: TaskAdapter.Size): TaskFragment {
             return TaskFragment().apply {
-                arguments = getArguments(list, taskType, size)
+                arguments = getArguments(taskType, size)
             }
         }
 
-        fun getArguments(list: ArrayList<Task>, taskType: TaskType, size: TaskAdapter.Size) = Bundle().apply {
-            putSerializable(KEY_TASK_LIST, list)
+        fun getArguments(taskType: TaskType, size: TaskAdapter.Size) = Bundle().apply {
             putSerializable(KEY_LIST_TYPE, taskType)
             putSerializable(KEY_LIST_SIZE, size)
         }

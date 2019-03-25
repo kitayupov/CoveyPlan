@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kamtayupov.koviplan.R
-import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.list.TaskAdapter
 import com.kamtayupov.koviplan.list.TaskFragment
 import com.kamtayupov.koviplan.list.TaskFragment.TaskType
-import com.kamtayupov.koviplan.repository.Repository
 
 class ChaptersFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -25,7 +23,6 @@ class ChaptersFragment : Fragment() {
                         beginTransaction().add(
                             it.layoutResId,
                             TaskFragment.newInstance(
-                                Repository.getTasks() as ArrayList<Task>,
                                 it.taskType,
                                 TaskAdapter.Size.SMALL
                             )

@@ -9,10 +9,10 @@ import com.kamtayupov.koviplan.R
 import com.kamtayupov.koviplan.data.Task
 
 class TaskAdapter(
-    private val list: ArrayList<Task>,
     private val size: Size,
     private val listener: OnTaskSelectionListener
 ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
+    private val list = ArrayList<Task>()
 
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -29,6 +29,14 @@ class TaskAdapter(
     }
 
     override fun getItemCount() = list.size
+
+    fun setList(it: List<Task>) {
+        list.apply {
+            clear()
+            addAll(it)
+            notifyDataSetChanged()
+        }
+    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val name = itemView.findViewById<TextView>(R.id.name_text)
