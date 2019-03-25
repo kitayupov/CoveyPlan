@@ -30,8 +30,8 @@ class EditTaskFragment : Fragment() {
             priorityBar = view.findViewById(R.id.task_priority_bar)
             nameText.text = task.name
             descriptionText.text = task.description
-            dateText.text = when (task.date) {
-                Task.DEFAULT_DATE -> null
+            dateText.text = when (task.dateTime) {
+                Task.DEFAULT_DATE_TIME -> null
                 else -> toString()
             }
             priorityBar.rating = task.priority.value().toFloat()

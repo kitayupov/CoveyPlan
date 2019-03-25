@@ -1,15 +1,15 @@
 package com.kamtayupov.koviplan.data
 
+import org.joda.time.DateTime
 import java.io.Serializable
-import java.util.*
 
 data class Task(
     var name: String = "",
     var description: String = "",
-    var date: Date = DEFAULT_DATE,
+    var dateTime: DateTime = DEFAULT_DATE_TIME,
     var priority: Priority = Priority.DEFAULT
 ) : Serializable {
     companion object {
-        val DEFAULT_DATE = Date(-1)
+        val DEFAULT_DATE_TIME = DateTime(-1)
     }
 }
