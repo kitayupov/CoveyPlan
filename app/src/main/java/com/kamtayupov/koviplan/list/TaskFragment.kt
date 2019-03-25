@@ -43,12 +43,17 @@ class TaskFragment : Fragment() {
             )
         }
         Repository.tasks.observe(this, Observer {
-            it?.filter {
-                with(type as TaskType) {
+            with(type as TaskType) {
+                it?.filter {
                     Importance.get(it.priority) == this.importance && Urgency.get(it.dateTime) == this.urgency
+                }?.let {
+                    when (type.urgency) {
+                        Urgency.URGENT -> it.sortedBy { it.dateTime }
+                        Urgency.NORMAL -> it.sortedByDescending { it.priority }
+                    }.apply {
+                        (recyclerView.adapter as TaskAdapter).setList(this)
+                    }
                 }
-            }?.let {
-                (recyclerView.adapter as TaskAdapter).setList(it)
             }
         })
         when (size as TaskAdapter.Size) {

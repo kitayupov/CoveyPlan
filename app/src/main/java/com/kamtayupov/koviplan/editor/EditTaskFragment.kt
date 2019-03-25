@@ -32,7 +32,7 @@ class EditTaskFragment : Fragment() {
             descriptionText.text = task.description
             dateText.text = when (task.dateTime) {
                 Task.DEFAULT_DATE_TIME -> null
-                else -> toString()
+                else -> task.dateTime.toLocalDateTime().toString()
             }
             priorityBar.rating = task.priority.value().toFloat()
             activity?.title = task.name
