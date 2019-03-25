@@ -14,7 +14,7 @@ enum class DateRange(private val range: ClosedRange<Days>) {
 
     companion object {
         fun get(dateTime: DateTime): DateRange {
-            val days = Days.daysBetween(dateTime, DateTime.now())
+            val days = Days.daysBetween(DateTime.now(), dateTime)
             for (value in values()) {
                 if (days in value.range) {
                     return value
