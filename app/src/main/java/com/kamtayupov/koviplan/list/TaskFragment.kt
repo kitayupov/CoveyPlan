@@ -10,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.kamtayupov.koviplan.MainActivity
 import com.kamtayupov.koviplan.R
+import com.kamtayupov.koviplan.data.Importance
 import com.kamtayupov.koviplan.data.Task
+import com.kamtayupov.koviplan.data.Urgency
 import com.kamtayupov.koviplan.list.TaskAdapter.Size.NORMAL
 import com.kamtayupov.koviplan.list.TaskAdapter.Size.SMALL
 import com.kamtayupov.koviplan.repository.Repository
@@ -41,7 +43,11 @@ class TaskFragment : Fragment() {
             )
         }
         Repository.tasks.observe(this, Observer {
-            if (it != null) {
+            it?.filter {
+                with(type as TaskType) {
+                    Importance.get(it.priority) == this.importance && Urgency.get(it.dateTime) == this.urgency
+                }
+            }?.let {
                 (recyclerView.adapter as TaskAdapter).setList(it)
             }
         })
@@ -68,10 +74,10 @@ class TaskFragment : Fragment() {
         }
     }
 
-    enum class TaskType(val nameResId: Int) {
-        URGENT_IMPORTANT(R.string.title_type_urgent_important),
-        URGENT_UNIMPORTANT(R.string.title_type_urgent_unimportant),
-        NON_URGENT_IMPORTANT(R.string.title_type_non_urgent_important),
-        NON_URGENT_UNIMPORTANT(R.string.title_type_non_urgent_unimportant)
+    enum class TaskType(val urgency: Urgency, val importance: Importance, val nameResId: Int) {
+        URGENT_IMPORTANT(Urgency.URGENT, Importance.IMPORTANT, R.string.title_type_urgent_important),
+        URGENT_UNIMPORTANT(Urgency.URGENT, Importance.NORMAL, R.string.title_type_urgent_unimportant),
+        NON_URGENT_IMPORTANT(Urgency.NORMAL, Importance.IMPORTANT, R.string.title_type_non_urgent_important),
+        NON_URGENT_UNIMPORTANT(Urgency.NORMAL, Importance.NORMAL, R.string.title_type_non_urgent_unimportant)
     }
 }
