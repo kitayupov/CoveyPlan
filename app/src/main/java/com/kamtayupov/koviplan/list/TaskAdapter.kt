@@ -1,5 +1,6 @@
 package com.kamtayupov.koviplan.list
 
+import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,15 @@ import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
 import com.kamtayupov.koviplan.R
+import com.kamtayupov.koviplan.data.DateRange
 import com.kamtayupov.koviplan.data.Task
+import org.joda.time.DateTime
+import org.joda.time.Days
+import org.joda.time.Months
+import org.joda.time.Weeks
 
 class TaskAdapter(
+    private val context: Context,
     private val size: Size,
     private val listener: OnTaskSelectionListener
 ) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
@@ -26,7 +33,7 @@ class TaskAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(list[position], size, listener)
+        holder.bind(context, list[position], size, listener)
     }
 
     override fun getItemCount() = list.size
@@ -44,14 +51,26 @@ class TaskAdapter(
         private val date = itemView.findViewById<TextView>(R.id.date_text)
         private val priority = itemView.findViewById<RatingBar>(R.id.priority_bar)
 
-        fun bind(task: Task, size: Size, listener: OnTaskSelectionListener) {
+        fun bind(context: Context, task: Task, size: Size, listener: OnTaskSelectionListener) {
             name.text = task.name
             if (size == Size.NORMAL) {
-                date.text = task.dateTime.toLocalDate().toString()
+                date.text = getDateString(context, task)
                 priority.rating = task.priority.value().toFloat()
             }
             itemView.setOnClickListener {
                 listener.onTaskSelected(task)
+            }
+        }
+
+        private fun getDateString(context: Context, task: Task): String {
+            with(DateRange.get(task.dateTime)) {
+                val count = when (this) {
+                    DateRange.PAST -> -Days.daysBetween(DateTime.now(), task.dateTime).days
+                    DateRange.MONTH -> Weeks.weeksBetween(DateTime.now(), task.dateTime).weeks
+                    DateRange.YEAR -> Months.monthsBetween(DateTime.now(), task.dateTime).months
+                    else -> Days.daysBetween(DateTime.now(), task.dateTime).days
+                }
+                return context.resources.getQuantityString(nameResId, count, count)
             }
         }
     }

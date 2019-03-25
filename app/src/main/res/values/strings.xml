@@ -16,4 +16,26 @@
     <string name="label_task_description">Description</string>
     <string name="label_task_date">Date</string>
     <string name="label_task_priority">Priority</string>
+    <plurals name="range_past">
+        <item quantity="one">Passed a day</item>
+        <item quantity="other">Passed %1$d days</item>
+    </plurals>
+    <plurals name="range_today">
+        <item quantity="other">Today</item>
+    </plurals>
+    <plurals name="range_week">
+        <item quantity="one">In a day</item>
+        <item quantity="other">In %1$d days</item>
+    </plurals>
+    <plurals name="range_month">
+        <item quantity="one">In a week</item>
+        <item quantity="other">In %1$d weeks</item>
+    </plurals>
+    <plurals name="range_year">
+        <item quantity="one">In a month</item>
+        <item quantity="other">In %1$d months</item>
+    </plurals>
+    <plurals name="range_over_a_year">
+        <item quantity="other">Over a year</item>
+    </plurals>
 </resources>

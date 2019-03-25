@@ -29,6 +29,7 @@ class TaskFragment : Fragment() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = TaskAdapter(
+                context,
                 size as TaskAdapter.Size,
                 object : TaskAdapter.OnTaskSelectionListener {
                     override fun onTaskSelected(task: Task) {

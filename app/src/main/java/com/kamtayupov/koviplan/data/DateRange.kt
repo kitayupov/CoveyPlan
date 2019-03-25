@@ -1,16 +1,16 @@
 package com.kamtayupov.koviplan.data
 
+import com.kamtayupov.koviplan.R
 import org.joda.time.DateTime
 import org.joda.time.Days
 
-enum class DateRange(private val range: ClosedRange<Days>) {
-    PAST(Days.MIN_VALUE..Days.ZERO - 1),
-    TODAY(Days.ZERO..Days.ZERO),
-    WEEK(Days.ONE..Days.SIX),
-    MONTH(Days.SEVEN..Days.days(28)),
-    HALF_YEAR(Days.days(29)..Days.days(180)),
-    YEAR(Days.days(181)..Days.days(365)),
-    OVER_A_YEAR(Days.days(366)..Days.MAX_VALUE);
+enum class DateRange(private val range: ClosedRange<Days>, val nameResId: Int) {
+    PAST(Days.MIN_VALUE..Days.ZERO - 1, R.plurals.range_past),
+    TODAY(Days.ZERO..Days.ZERO, R.plurals.range_today),
+    WEEK(Days.ONE..Days.SIX, R.plurals.range_week),
+    MONTH(Days.SEVEN..Days.days(28), R.plurals.range_month),
+    YEAR(Days.days(29)..Days.days(365), R.plurals.range_year),
+    OVER_A_YEAR(Days.days(366)..Days.MAX_VALUE, R.plurals.range_over_a_year);
 
     companion object {
         fun get(dateTime: DateTime): DateRange {
