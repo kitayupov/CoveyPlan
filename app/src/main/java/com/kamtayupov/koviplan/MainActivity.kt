@@ -92,12 +92,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun onChapterSelected(type: TaskFragment.Type) {
+    fun onChapterSelected(taskType: TaskFragment.TaskType) {
         navController.navigate(
             R.id.taskFragment,
             TaskFragment.getArguments(
                 Repository.getTasks() as ArrayList<Task>,
-                type,
+                taskType,
                 NORMAL
             )
         )

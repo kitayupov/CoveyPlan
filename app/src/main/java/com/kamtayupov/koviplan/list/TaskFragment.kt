@@ -32,7 +32,7 @@ class TaskFragment : Fragment() {
                     override fun onTaskSelected(task: Task) {
                         (activity as MainActivity).apply {
                             when (size) {
-                                SMALL -> onChapterSelected(type as Type)
+                                SMALL -> onChapterSelected(type as TaskType)
                                 NORMAL -> onTaskSelected(task)
                             }
                         }
@@ -41,7 +41,7 @@ class TaskFragment : Fragment() {
             )
         }
         when (size as TaskAdapter.Size) {
-            NORMAL -> activity?.setTitle((type as Type).nameResId)
+            NORMAL -> activity?.setTitle((type as TaskType).nameResId)
             else -> {
             }
         }
@@ -52,23 +52,23 @@ class TaskFragment : Fragment() {
         private const val KEY_LIST_TYPE = "TaskFragment.KeyListType"
         private const val KEY_LIST_SIZE = "TaskFragment.KeyListSize"
 
-        fun newInstance(list: ArrayList<Task>, type: Type, size: TaskAdapter.Size): TaskFragment {
+        fun newInstance(list: ArrayList<Task>, taskType: TaskType, size: TaskAdapter.Size): TaskFragment {
             return TaskFragment().apply {
-                arguments = getArguments(list, type, size)
+                arguments = getArguments(list, taskType, size)
             }
         }
 
-        fun getArguments(list: ArrayList<Task>, type: Type, size: TaskAdapter.Size) = Bundle().apply {
+        fun getArguments(list: ArrayList<Task>, taskType: TaskType, size: TaskAdapter.Size) = Bundle().apply {
             putSerializable(KEY_TASK_LIST, list)
-            putSerializable(KEY_LIST_TYPE, type)
+            putSerializable(KEY_LIST_TYPE, taskType)
             putSerializable(KEY_LIST_SIZE, size)
         }
     }
 
-    enum class Type(val nameResId: Int) {
-        FIRST(R.string.title_type_first),
-        SECOND(R.string.title_type_second),
-        THIRD(R.string.title_type_third),
-        FOURTH(R.string.title_type_fourth)
+    enum class TaskType(val nameResId: Int) {
+        URGENT_IMPORTANT(R.string.title_type_urgent_important),
+        URGENT_UNIMPORTANT(R.string.title_type_urgent_unimportant),
+        NON_URGENT_IMPORTANT(R.string.title_type_non_urgent_important),
+        NON_URGENT_UNIMPORTANT(R.string.title_type_non_urgent_unimportant)
     }
 }

@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kamtayupov.koviplan.R
-import com.kamtayupov.koviplan.list.TaskFragment.Type
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.list.TaskAdapter
 import com.kamtayupov.koviplan.list.TaskFragment
+import com.kamtayupov.koviplan.list.TaskFragment.TaskType
 import com.kamtayupov.koviplan.repository.Repository
 
 class ChaptersFragment : Fragment() {
@@ -24,7 +24,11 @@ class ChaptersFragment : Fragment() {
                     .forEach {
                         beginTransaction().add(
                             it.layoutResId,
-                            TaskFragment.newInstance(Repository.getTasks() as ArrayList<Task>, it.type, TaskAdapter.Size.SMALL)
+                            TaskFragment.newInstance(
+                                Repository.getTasks() as ArrayList<Task>,
+                                it.taskType,
+                                TaskAdapter.Size.SMALL
+                            )
                         )
                             .commit()
                     }
@@ -33,10 +37,10 @@ class ChaptersFragment : Fragment() {
         }
     }
 
-    enum class Chapter(val type: TaskFragment.Type, val layoutResId: Int) {
-        FIRST(Type.FIRST, R.id.chapter_one_list),
-        SECOND(Type.SECOND, R.id.chapter_two_list),
-        THIRD(Type.THIRD, R.id.chapter_three_list),
-        FOURTH(Type.FOURTH, R.id.chapter_four_list)
+    enum class Chapter(val taskType: TaskFragment.TaskType, val layoutResId: Int) {
+        FIRST(TaskType.URGENT_IMPORTANT, R.id.chapter_one_list),
+        SECOND(TaskType.URGENT_UNIMPORTANT, R.id.chapter_two_list),
+        THIRD(TaskType.NON_URGENT_IMPORTANT, R.id.chapter_three_list),
+        FOURTH(TaskType.NON_URGENT_UNIMPORTANT, R.id.chapter_four_list)
     }
 }

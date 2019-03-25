@@ -7,10 +7,10 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="title_chapters">Chapters</string>
-    <string name="title_type_first">First</string>
-    <string name="title_type_second">Second</string>
-    <string name="title_type_third">Third</string>
-    <string name="title_type_fourth">Fourth</string>
+    <string name="title_type_urgent_important">Urgent and Important</string>
+    <string name="title_type_urgent_unimportant">Urgent and Unimportant</string>
+    <string name="title_type_non_urgent_important">Non-urgent and Important</string>
+    <string name="title_type_non_urgent_unimportant">Non-urgent and Unimportant</string>
     <string name="title_edit_task">Add New Task</string>
     <string name="label_task_title">Title</string>
     <string name="label_task_description">Description</string>
