@@ -13,7 +13,6 @@ import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.editor.EditTaskFragment
 import com.kamtayupov.koviplan.list.TaskAdapter.Size.NORMAL
 import com.kamtayupov.koviplan.list.TaskFragment
-import com.kamtayupov.koviplan.repository.Repository
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -28,7 +27,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
-        fab.setOnClickListener {
+        plus_fab.setOnClickListener {
             navController.navigate(R.id.editTaskFragment)
         }
 

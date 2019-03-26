@@ -1,6 +1,7 @@
 package com.kamtayupov.koviplan.editor
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +12,12 @@ import com.kamtayupov.koviplan.R
 import com.kamtayupov.koviplan.data.Task
 
 class EditTaskFragment : Fragment() {
-
     private lateinit var nameText: TextView
     private lateinit var descriptionText: TextView
     private lateinit var dateText: TextView
     private lateinit var priorityBar: RatingBar
+    private lateinit var plusFab: FloatingActionButton
+    private lateinit var saveFab: FloatingActionButton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_edit_task, container, false)
@@ -38,6 +40,22 @@ class EditTaskFragment : Fragment() {
             activity?.title = task.name
         } else {
             activity?.setTitle(R.string.title_edit_task)
+        }
+        plusFab = activity?.findViewById(R.id.plus_fab) ?: return
+        saveFab = activity?.findViewById(R.id.save_fab) ?: return
+        plusFab.hide(getVisibilityChangedListener(saveFab))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        saveFab.hide(getVisibilityChangedListener(plusFab))
+    }
+
+    private fun getVisibilityChangedListener(nextFab: FloatingActionButton): FloatingActionButton.OnVisibilityChangedListener {
+        return object : FloatingActionButton.OnVisibilityChangedListener() {
+            override fun onHidden(fab: FloatingActionButton?) {
+                nextFab.show()
+            }
         }
     }
 
