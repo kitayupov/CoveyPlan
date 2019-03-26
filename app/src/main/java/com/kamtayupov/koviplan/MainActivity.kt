@@ -31,6 +31,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             navController.navigate(R.id.editTaskFragment)
         }
 
+        save_fab.setOnClickListener {
+            val hostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+            val fragments = hostFragment?.childFragmentManager?.fragments
+            fragments?.let {
+                val fragment = it[0]
+                when (fragment) {
+                    is EditTaskFragment -> fragment.saveTask()
+                }
+            }
+            navController.popBackStack()
+        }
+
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
         )

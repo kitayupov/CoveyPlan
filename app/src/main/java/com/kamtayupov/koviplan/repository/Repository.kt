@@ -11,7 +11,7 @@ import java.util.*
 
 class Repository {
     companion object LifecycleObserver {
-        val tasks = MutableLiveData<List<Task>>().apply {
+        val tasks = MutableLiveData<MutableList<Task>>().apply {
             postValue(ArrayList<Task>().apply {
                 for (c in 0..1000) {
                     add(

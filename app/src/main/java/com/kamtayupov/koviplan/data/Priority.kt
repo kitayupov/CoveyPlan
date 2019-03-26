@@ -9,4 +9,8 @@ enum class Priority {
     CRITICAL;
 
     fun value() = ordinal
+
+    companion object {
+        fun get(value: Int) = values()[value]
+    }
 }
