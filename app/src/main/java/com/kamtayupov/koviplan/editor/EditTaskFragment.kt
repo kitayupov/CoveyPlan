@@ -13,6 +13,8 @@ import com.kamtayupov.koviplan.R
 import com.kamtayupov.koviplan.data.Priority
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.repository.Repository
+import org.joda.time.DateTime
+import java.util.*
 
 class EditTaskFragment : Fragment() {
     private lateinit var nameText: TextView
@@ -22,7 +24,8 @@ class EditTaskFragment : Fragment() {
     private lateinit var calendarImage: ImageView
     private lateinit var plusFab: FloatingActionButton
     private lateinit var saveFab: FloatingActionButton
-    private lateinit var task: Task
+    private lateinit var originalTask: Task
+    private lateinit var editedTask: Task
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_edit_task, container, false)
@@ -35,23 +38,43 @@ class EditTaskFragment : Fragment() {
         calendarImage = view.findViewById(R.id.task_calendar_image)
         priorityBar = view.findViewById(R.id.task_priority_bar)
         val task = arguments?.getSerializable(KEY_TASK)
-        if (task is Task) {
-            this.task = task
-            nameText.text = task.name
-            descriptionText.text = task.description
-            dateText.text = when (task.dateTime) {
-                Task.DEFAULT_DATE_TIME -> null
-                else -> task.dateTime.toLocalDateTime().toString()
+        activity?.apply {
+            if (task is Task) {
+                title = task.name
+            } else {
+                setTitle(R.string.title_edit_task)
             }
-            priorityBar.rating = task.priority.value().toFloat()
-            activity?.title = task.name
-        } else {
-            this.task = Task()
-            activity?.setTitle(R.string.title_edit_task)
         }
+        originalTask = if (task is Task) task else Task()
+        editedTask = originalTask.copy()
+        updateFields()
         plusFab = activity?.findViewById(R.id.plus_fab) ?: return
         saveFab = activity?.findViewById(R.id.save_fab) ?: return
         plusFab.hide(getVisibilityChangedListener(saveFab))
+        for (v in arrayOf(dateText, calendarImage)) {
+            v.setOnClickListener {
+                val dialog =
+                    if (editedTask.dateTime == Task.DEFAULT_DATE_TIME) DatePickerDialogFragment()
+                    else DatePickerDialogFragment.newInstance(editedTask.dateTime.toDate())
+                dialog.callback = object : DatePickerDialogFragment.Callback {
+                    override fun onDatePicked(date: Date) {
+                        editedTask.dateTime = DateTime(date)
+                        dateText.text = editedTask.dateTime.toLocalDate().toString()
+                    }
+                }
+                dialog.show(activity?.supportFragmentManager, "DatePicker")
+            }
+        }
+    }
+
+    private fun updateFields() {
+        nameText.text = editedTask.name
+        descriptionText.text = editedTask.description
+        dateText.text = when (editedTask.dateTime) {
+            Task.DEFAULT_DATE_TIME -> null
+            else -> editedTask.dateTime.toLocalDate().toString()
+        }
+        priorityBar.rating = editedTask.priority.value().toFloat()
     }
 
     override fun onDestroy() {
@@ -60,15 +83,15 @@ class EditTaskFragment : Fragment() {
     }
 
     fun saveTask() {
-        val editTask = Task(
-            name = nameText.text.toString(),
-            description = descriptionText.text.toString(),
-            priority = Priority.get(priorityBar.rating.toInt()),
-            dateTime = task.dateTime
-        )
+        editedTask.apply {
+            name = nameText.text.toString()
+            description = descriptionText.text.toString()
+            priority = Priority.get(priorityBar.rating.toInt())
+        }
         Repository.tasks.value?.apply {
-            val index = indexOf(task)
-            if (index == -1) add(editTask) else set(index, editTask)
+            with(indexOf(originalTask)) {
+                if (this == -1) add(editedTask) else set(this, editedTask)
+            }
         }
     }
 
