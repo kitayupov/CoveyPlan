@@ -66,9 +66,23 @@
             android:editable="false"
             android:ems="10"
             app:layout_constraintStart_toStartOf="@+id/task_name_text"
-            app:layout_constraintEnd_toEndOf="@+id/task_name_text"
+            app:layout_constraintEnd_toStartOf="@+id/task_calendar_image"
             app:layout_constraintTop_toBottomOf="@+id/date_label"
+            app:layout_constraintHorizontal_bias="0.5"
             tools:text="Task Date"/>
+
+    <ImageView
+            android:id="@+id/task_calendar_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            app:srcCompat="@drawable/ic_calendar"
+            app:layout_constraintStart_toEndOf="@+id/task_date_text"
+            app:layout_constraintEnd_toEndOf="@+id/task_name_text"
+            app:layout_constraintBottom_toBottomOf="@+id/task_date_text"
+            app:layout_constraintTop_toTopOf="@+id/task_date_text"
+            app:layout_constraintHorizontal_bias="0.5"/>
 
     <TextView
             android:id="@+id/priority_label"

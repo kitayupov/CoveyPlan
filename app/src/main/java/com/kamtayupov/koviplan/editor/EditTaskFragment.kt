@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import com.kamtayupov.koviplan.R
@@ -18,6 +19,7 @@ class EditTaskFragment : Fragment() {
     private lateinit var descriptionText: TextView
     private lateinit var dateText: TextView
     private lateinit var priorityBar: RatingBar
+    private lateinit var calendarImage: ImageView
     private lateinit var plusFab: FloatingActionButton
     private lateinit var saveFab: FloatingActionButton
     private lateinit var task: Task
@@ -30,6 +32,7 @@ class EditTaskFragment : Fragment() {
         nameText = view.findViewById(R.id.task_name_text)
         descriptionText = view.findViewById(R.id.task_description_text)
         dateText = view.findViewById(R.id.task_date_text)
+        calendarImage = view.findViewById(R.id.task_calendar_image)
         priorityBar = view.findViewById(R.id.task_priority_bar)
         val task = arguments?.getSerializable(KEY_TASK)
         if (task is Task) {
