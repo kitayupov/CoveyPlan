@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kamtayupov.koviplan.R
-import com.kamtayupov.koviplan.list.TaskAdapter
+import com.kamtayupov.koviplan.list.BaseTaskAdapter.Type.SIMPLE
 import com.kamtayupov.koviplan.list.TaskFragment
 import com.kamtayupov.koviplan.list.TaskFragment.TaskType
 
@@ -24,7 +24,7 @@ class ChaptersFragment : Fragment() {
                             it.layoutResId,
                             TaskFragment.newInstance(
                                 it.taskType,
-                                TaskAdapter.Size.SMALL
+                                SIMPLE
                             )
                         )
                         .commit()

@@ -19,34 +19,19 @@ import org.joda.time.Weeks
 
 class TaskAdapter(
     private val context: Context,
-    private val size: Size,
-    private val listener: OnTaskSelectionListener
-) : RecyclerView.Adapter<TaskAdapter.ViewHolder>() {
-    private val list = ArrayList<Task>()
-
+    private val callback: OnTaskSelectedCallback
+) : BaseTaskAdapter<TaskAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val layoutResId = when (size) {
-            Size.SMALL -> R.layout.layout_list_item_task_small
-            Size.NORMAL -> R.layout.layout_list_item_task
-        }
-        val view = inflater.inflate(layoutResId, parent, false)
+        val view = inflater.inflate(R.layout.layout_list_item_task, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(context, list[position], size, listener)
+        holder.bind(context, list[position], callback)
     }
 
     override fun getItemCount() = list.size
-
-    fun setList(it: List<Task>) {
-        list.apply {
-            clear()
-            addAll(it)
-            notifyDataSetChanged()
-        }
-    }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val name = itemView.findViewById<TextView>(R.id.name_text)
@@ -54,27 +39,23 @@ class TaskAdapter(
         private val priority = itemView.findViewById<RatingBar>(R.id.priority_bar)
         private val done = itemView.findViewById<CheckBox>(R.id.done_check)
 
-        fun bind(context: Context, task: Task, size: Size, listener: OnTaskSelectionListener) {
+        fun bind(context: Context, task: Task, callback: OnTaskSelectedCallback) {
             name.text = task.name
-            if (size == Size.NORMAL) {
-                date.text = getDateString(context, task)
-                priority.rating = task.priority.value().toFloat()
-                done.isChecked = task.done
-                done.setOnCheckedChangeListener { _, checked ->
-                    run {
-                        TasksViewModel.tasks?.value?.let {
-                            it[it.indexOf(task)] = task.apply { done = checked }
-                        }
+            date.text = getDateString(context, task)
+            priority.rating = task.priority.value().toFloat()
+            done.isChecked = task.done
+            done.setOnCheckedChangeListener { _, checked ->
+                run {
+                    TasksViewModel.tasks?.value?.let {
+                        it[it.indexOf(task)] = task.apply { done = checked }
                     }
                 }
             }
-            itemView.setOnClickListener {
-                listener.onTaskSelected(task)
-            }
+            itemView.setOnClickListener { callback.onSelected(task) }
         }
 
         private fun getDateString(context: Context, task: Task): String {
-            if (task.dateTime == Task.DEFAULT_DATE_TIME) return ""
+            if (task.dateTime == Task.DEFAULT_DATE_TIME) return task.toString()
             with(DateRange.get(task.dateTime)) {
                 val count = when (this) {
                     DateRange.PAST -> -Days.daysBetween(DateTime.now(), task.dateTime).days
@@ -87,11 +68,7 @@ class TaskAdapter(
         }
     }
 
-    interface OnTaskSelectionListener {
-        fun onTaskSelected(task: Task)
-    }
-
-    enum class Size {
-        SMALL, NORMAL
+    interface OnTaskSelectedCallback {
+        fun onSelected(task: Task)
     }
 }

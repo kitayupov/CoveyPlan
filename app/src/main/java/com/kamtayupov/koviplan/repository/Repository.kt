@@ -11,7 +11,7 @@ class Repository {
             Thread {
                 callback.onLoaded(
                     ArrayList<Task>().apply {
-                        for (c in 0..1000) {
+                        for (c in 0..100) {
                             add(
                                 Task(
                                     "Task $c",

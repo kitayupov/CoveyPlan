@@ -13,8 +13,7 @@ import com.kamtayupov.koviplan.R
 import com.kamtayupov.koviplan.data.Importance
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.data.Urgency
-import com.kamtayupov.koviplan.list.TaskAdapter.Size.NORMAL
-import com.kamtayupov.koviplan.list.TaskAdapter.Size.SMALL
+import com.kamtayupov.koviplan.list.BaseTaskAdapter.Type.USUAL
 import com.kamtayupov.koviplan.repository.TasksViewModel
 
 class TaskFragment : Fragment() {
@@ -28,20 +27,20 @@ class TaskFragment : Fragment() {
         val recyclerView = view as RecyclerView
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = TaskAdapter(
-                context,
-                size as TaskAdapter.Size,
-                object : TaskAdapter.OnTaskSelectionListener {
-                    override fun onTaskSelected(task: Task) {
-                        (activity as MainActivity).apply {
-                            when (size) {
-                                SMALL -> onChapterSelected(type as TaskType)
-                                NORMAL -> onTaskSelected(task)
-                            }
-                        }
+            adapter = when (size) {
+                USUAL -> TaskAdapter(context, object : TaskAdapter.OnTaskSelectedCallback {
+                    override fun onSelected(task: Task) {
+                        (activity as MainActivity).onTaskSelected(task)
                     }
+                })
+                else -> {
+                    TaskSimpleAdapter(object : TaskSimpleAdapter.OnClickCallback {
+                        override fun onSelect() {
+                            (activity as MainActivity).onChapterSelected(type as TaskType)
+                        }
+                    })
                 }
-            )
+            }
         }
         TasksViewModel.tasks?.observe(this, Observer {
             with(type as TaskType) {
@@ -52,13 +51,13 @@ class TaskFragment : Fragment() {
                         Urgency.URGENT -> it.sortedBy { it.dateTime }
                         Urgency.NORMAL -> it.sortedByDescending { it.priority }
                     }.apply {
-                        (recyclerView.adapter as TaskAdapter).setList(this)
+                        (recyclerView.adapter as BaseTaskAdapter).setList(this)
                     }
                 }
             }
         })
-        when (size as TaskAdapter.Size) {
-            NORMAL -> activity?.setTitle((type as TaskType).nameResId)
+        when (size as BaseTaskAdapter.Type) {
+            USUAL -> activity?.setTitle((type as TaskType).nameResId)
             else -> {
             }
         }
@@ -68,13 +67,13 @@ class TaskFragment : Fragment() {
         private const val KEY_LIST_TYPE = "TaskFragment.KeyListType"
         private const val KEY_LIST_SIZE = "TaskFragment.KeyListSize"
 
-        fun newInstance(taskType: TaskType, size: TaskAdapter.Size): TaskFragment {
+        fun newInstance(taskType: TaskType, size: BaseTaskAdapter.Type): TaskFragment {
             return TaskFragment().apply {
                 arguments = getArguments(taskType, size)
             }
         }
 
-        fun getArguments(taskType: TaskType, size: TaskAdapter.Size) = Bundle().apply {
+        fun getArguments(taskType: TaskType, size: BaseTaskAdapter.Type) = Bundle().apply {
             putSerializable(KEY_LIST_TYPE, taskType)
             putSerializable(KEY_LIST_SIZE, size)
         }
