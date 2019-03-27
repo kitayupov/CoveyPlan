@@ -39,6 +39,6 @@
             android:layout_margin="@dimen/fab_margin"
             android:visibility="gone"
             tools:visibility="visible"
-            app:srcCompat="@drawable/ic_check"/>
+            app:srcCompat="@drawable/ic_pencil"/>
 
 </android.support.design.widget.CoordinatorLayout>

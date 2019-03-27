@@ -3,9 +3,9 @@ package com.kamtayupov.koviplan.editor
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.*
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -14,7 +14,6 @@ import com.kamtayupov.koviplan.data.Priority
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.repository.TasksViewModel
 import org.joda.time.DateTime
-import java.text.SimpleDateFormat
 import java.util.*
 
 class EditTaskFragment : Fragment() {
@@ -27,6 +26,15 @@ class EditTaskFragment : Fragment() {
     private lateinit var saveFab: FloatingActionButton
     private lateinit var originalTask: Task
     private lateinit var editedTask: Task
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.edit, menu)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_edit_task, container, false)
@@ -49,9 +57,35 @@ class EditTaskFragment : Fragment() {
         originalTask = if (task is Task) task else Task()
         editedTask = originalTask.copy()
         updateFields()
-        plusFab = activity?.findViewById(R.id.plus_fab) ?: return
-        saveFab = activity?.findViewById(R.id.save_fab) ?: return
-        plusFab.hide(getVisibilityChangedListener(saveFab))
+        initFieldListeners()
+        initFabs()
+    }
+
+    private fun updateFields() {
+        nameText.text = editedTask.name
+        descriptionText.text = editedTask.description
+        dateText.text = editedTask.dateString()
+        priorityBar.rating = editedTask.priority.value().toFloat()
+    }
+
+    private fun initFieldListeners() {
+        nameText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                editedTask.name = s.toString()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        descriptionText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                editedTask.description = s.toString()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+        priorityBar.setOnRatingBarChangeListener { _, rating, _ -> editedTask.priority = Priority.get(rating.toInt()) }
         for (v in arrayOf(dateText, calendarImage)) {
             v.setOnClickListener {
                 val dialog =
@@ -60,7 +94,7 @@ class EditTaskFragment : Fragment() {
                 dialog.callback = object : DatePickerDialogFragment.Callback {
                     override fun onDatePicked(date: Date) {
                         editedTask.dateTime = DateTime(date)
-                        dateText.text = editedTask.dateTime.dateString()
+                        dateText.text = editedTask.dateString()
                     }
                 }
                 dialog.show(activity?.supportFragmentManager, "DatePicker")
@@ -68,14 +102,21 @@ class EditTaskFragment : Fragment() {
         }
     }
 
-    private fun updateFields() {
-        nameText.text = editedTask.name
-        descriptionText.text = editedTask.description
-        dateText.text = when (editedTask.dateTime) {
-            Task.DEFAULT_DATE_TIME -> null
-            else -> editedTask.dateTime.dateString()
+    private fun initFabs() {
+        plusFab = activity?.findViewById(R.id.plus_fab) ?: return
+        saveFab = activity?.findViewById(R.id.save_fab) ?: return
+        plusFab.hide(getVisibilityChangedListener(saveFab))
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.done -> {
+                editedTask.done = true
+                saveTask()
+                activity?.supportFragmentManager?.popBackStack()
+            }
         }
-        priorityBar.rating = editedTask.priority.value().toFloat()
+        return true
     }
 
     override fun onDestroy() {
@@ -84,11 +125,6 @@ class EditTaskFragment : Fragment() {
     }
 
     fun saveTask() {
-        editedTask.apply {
-            name = nameText.text.toString()
-            description = descriptionText.text.toString()
-            priority = Priority.get(priorityBar.rating.toInt())
-        }
         TasksViewModel.tasks?.value?.apply {
             with(indexOf(originalTask)) {
                 if (this == -1) add(editedTask) else set(this, editedTask)
@@ -96,13 +132,12 @@ class EditTaskFragment : Fragment() {
         }
     }
 
-    private fun getVisibilityChangedListener(nextFab: FloatingActionButton): FloatingActionButton.OnVisibilityChangedListener {
-        return object : FloatingActionButton.OnVisibilityChangedListener() {
+    private fun getVisibilityChangedListener(nextFab: FloatingActionButton) =
+        object : FloatingActionButton.OnVisibilityChangedListener() {
             override fun onHidden(fab: FloatingActionButton?) {
                 nextFab.show()
             }
         }
-    }
 
     companion object {
         private const val KEY_TASK = "EditTaskFragment.KeyTask"
@@ -111,6 +146,4 @@ class EditTaskFragment : Fragment() {
             putSerializable(KEY_TASK, task)
         }
     }
-
-    fun DateTime.dateString() = SimpleDateFormat("EEEE dd MMMM yyyy", Locale.getDefault()).format(toDate())
 }
