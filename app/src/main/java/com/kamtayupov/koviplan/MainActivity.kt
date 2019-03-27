@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.editor.EditTaskFragment
+import com.kamtayupov.koviplan.graph.ChaptersFragment
 import com.kamtayupov.koviplan.list.TaskAdapter.Size.NORMAL
 import com.kamtayupov.koviplan.list.TaskFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -78,9 +79,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
+        val hostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        val fragment = hostFragment?.childFragmentManager?.fragments?.get(0)
         when (item.itemId) {
-            R.id.nav_camera -> {
-                // Handle the camera action
+            R.id.nav_chapters -> {
+                if (fragment !is ChaptersFragment) {
+                    navController.navigate(R.id.chaptersFragment)
+                }
             }
             R.id.nav_gallery -> {
 

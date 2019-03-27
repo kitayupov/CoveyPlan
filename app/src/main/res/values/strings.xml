@@ -16,6 +16,7 @@
     <string name="label_task_description">Description</string>
     <string name="label_task_date">Date</string>
     <string name="label_task_priority">Priority</string>
+    <string name="nav_menu_chapters">Chapters</string>
     <plurals name="range_past">
         <item quantity="one">Passed a day ago</item>
         <item quantity="other">Passed %1$d days ago</item>
