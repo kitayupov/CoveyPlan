@@ -8,18 +8,18 @@ import com.kamtayupov.koviplan.list.BaseTaskAdapter.Type.SIMPLE
 import com.kamtayupov.koviplan.list.TaskFragment
 import com.kamtayupov.koviplan.list.TaskFragment.TaskType
 
-class ChaptersFragment : Fragment() {
+class QuartersFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.chapters, menu)
+        inflater?.inflate(R.menu.quarters, menu)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_chapters, container, false)
+        return inflater.inflate(R.layout.fragment_quarters, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class ChaptersFragment : Fragment() {
                         .commit()
                 }
             }
-            setTitle(R.string.title_chapters)
+            setTitle(R.string.title_quarters)
         }
     }
 

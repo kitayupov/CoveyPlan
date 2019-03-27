@@ -5,13 +5,12 @@ import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
 import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.editor.EditTaskFragment
-import com.kamtayupov.koviplan.graph.ChaptersFragment
+import com.kamtayupov.koviplan.graph.QuartersFragment
 import com.kamtayupov.koviplan.list.BaseTaskAdapter.Type.USUAL
 import com.kamtayupov.koviplan.list.TaskFragment
 import kotlinx.android.synthetic.main.activity_main.*
@@ -68,7 +67,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val fragment = hostFragment?.childFragmentManager?.fragments?.get(0)
         when (item.itemId) {
             R.id.nav_chapters -> {
-                if (fragment !is ChaptersFragment) {
+                if (fragment !is QuartersFragment) {
                     navController.navigate(R.id.chaptersFragment)
                 }
             }

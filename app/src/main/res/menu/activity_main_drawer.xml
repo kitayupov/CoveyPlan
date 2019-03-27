@@ -7,7 +7,7 @@
         <item
                 android:id="@+id/nav_chapters"
                 android:icon="@drawable/ic_chapters"
-                android:title="@string/nav_menu_chapters"/>
+                android:title="@string/nav_menu_quarters"/>
         <item
                 android:id="@+id/nav_gallery"
                 android:icon="@drawable/ic_menu_gallery"
