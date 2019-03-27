@@ -17,8 +17,8 @@
     <string name="label_task_date">Date</string>
     <string name="label_task_priority">Priority</string>
     <plurals name="range_past">
-        <item quantity="one">Passed a day</item>
-        <item quantity="other">Passed %1$d days</item>
+        <item quantity="one">Passed a day ago</item>
+        <item quantity="other">Passed %1$d days ago</item>
     </plurals>
     <plurals name="range_today">
         <item quantity="other">Today</item>

@@ -1,7 +1,7 @@
 package com.kamtayupov.koviplan.data
 
 enum class Priority {
-    USELESS,
+    UNKNOWN,
     DEFAULT,
     NORMAL,
     SERIOUS,

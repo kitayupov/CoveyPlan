@@ -14,6 +14,7 @@ import com.kamtayupov.koviplan.data.Priority
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.repository.TasksViewModel
 import org.joda.time.DateTime
+import java.text.SimpleDateFormat
 import java.util.*
 
 class EditTaskFragment : Fragment() {
@@ -59,7 +60,7 @@ class EditTaskFragment : Fragment() {
                 dialog.callback = object : DatePickerDialogFragment.Callback {
                     override fun onDatePicked(date: Date) {
                         editedTask.dateTime = DateTime(date)
-                        dateText.text = editedTask.dateTime.toLocalDate().toString()
+                        dateText.text = editedTask.dateTime.dateString()
                     }
                 }
                 dialog.show(activity?.supportFragmentManager, "DatePicker")
@@ -72,7 +73,7 @@ class EditTaskFragment : Fragment() {
         descriptionText.text = editedTask.description
         dateText.text = when (editedTask.dateTime) {
             Task.DEFAULT_DATE_TIME -> null
-            else -> editedTask.dateTime.toLocalDate().toString()
+            else -> editedTask.dateTime.dateString()
         }
         priorityBar.rating = editedTask.priority.value().toFloat()
     }
@@ -110,4 +111,6 @@ class EditTaskFragment : Fragment() {
             putSerializable(KEY_TASK, task)
         }
     }
+
+    fun DateTime.dateString() = SimpleDateFormat("EEEE dd MMMM yyyy", Locale.getDefault()).format(toDate())
 }

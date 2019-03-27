@@ -63,6 +63,7 @@ class TaskAdapter(
         }
 
         private fun getDateString(context: Context, task: Task): String {
+            if (task.dateTime == Task.DEFAULT_DATE_TIME) return ""
             with(DateRange.get(task.dateTime)) {
                 val count = when (this) {
                     DateRange.PAST -> -Days.daysBetween(DateTime.now(), task.dateTime).days
