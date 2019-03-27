@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-        nav_view.setCheckedItem(R.id.nav_chapters)
+        nav_view.setCheckedItem(R.id.nav_quarters)
 
         plus_fab.setOnClickListener {
             navController.navigate(R.id.editTaskFragment)
@@ -66,12 +66,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val hostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
         val fragment = hostFragment?.childFragmentManager?.fragments?.get(0)
         when (item.itemId) {
-            R.id.nav_chapters -> {
+            R.id.nav_quarters -> {
                 if (fragment !is QuartersFragment) {
                     navController.navigate(R.id.chaptersFragment)
                 }
             }
-            R.id.nav_gallery -> {
+            R.id.nav_completed -> {
 
             }
             R.id.nav_slideshow -> {
