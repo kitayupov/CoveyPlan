@@ -12,7 +12,7 @@ import android.widget.TextView
 import com.kamtayupov.koviplan.R
 import com.kamtayupov.koviplan.data.Priority
 import com.kamtayupov.koviplan.data.Task
-import com.kamtayupov.koviplan.repository.Repository
+import com.kamtayupov.koviplan.repository.TasksViewModel
 import org.joda.time.DateTime
 import java.util.*
 
@@ -88,7 +88,7 @@ class EditTaskFragment : Fragment() {
             description = descriptionText.text.toString()
             priority = Priority.get(priorityBar.rating.toInt())
         }
-        Repository.tasks.value?.apply {
+        TasksViewModel.tasks?.value?.apply {
             with(indexOf(originalTask)) {
                 if (this == -1) add(editedTask) else set(this, editedTask)
             }

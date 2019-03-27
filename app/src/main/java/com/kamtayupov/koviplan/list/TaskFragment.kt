@@ -15,7 +15,7 @@ import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.data.Urgency
 import com.kamtayupov.koviplan.list.TaskAdapter.Size.NORMAL
 import com.kamtayupov.koviplan.list.TaskAdapter.Size.SMALL
-import com.kamtayupov.koviplan.repository.Repository
+import com.kamtayupov.koviplan.repository.TasksViewModel
 
 class TaskFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -43,7 +43,7 @@ class TaskFragment : Fragment() {
                 }
             )
         }
-        Repository.tasks.observe(this, Observer {
+        TasksViewModel.tasks?.observe(this, Observer {
             with(type as TaskType) {
                 it?.filter {
                     Importance.get(it.priority) == this.importance && Urgency.get(it.dateTime) == this.urgency

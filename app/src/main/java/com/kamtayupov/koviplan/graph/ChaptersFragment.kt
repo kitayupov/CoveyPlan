@@ -18,17 +18,17 @@ class ChaptersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         activity?.apply {
             supportFragmentManager?.apply {
-                Chapter.values()
-                    .forEach {
-                        beginTransaction().add(
+                Chapter.values().forEach {
+                    beginTransaction()
+                        .replace(
                             it.layoutResId,
                             TaskFragment.newInstance(
                                 it.taskType,
                                 TaskAdapter.Size.SMALL
                             )
                         )
-                            .commit()
-                    }
+                        .commit()
+                }
             }
             setTitle(R.string.title_chapters)
         }
