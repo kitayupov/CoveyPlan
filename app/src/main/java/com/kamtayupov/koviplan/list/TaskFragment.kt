@@ -29,15 +29,15 @@ class TaskFragment : Fragment() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = if (simple) {
-                TaskSimpleAdapter(object : TaskSimpleAdapter.OnClickCallback {
-                    override fun onSelect() {
+                TaskSimpleAdapter(object : BaseTaskAdapter.OnTaskSelectedCallback {
+                    override fun onSelected(task: Task) {
                         if (activity is MainActivity && type is TaskType) {
                             (activity as MainActivity).onChapterSelected(type)
                         }
                     }
                 })
             } else {
-                TaskAdapter(context, object : TaskAdapter.OnTaskSelectedCallback {
+                TaskAdapter(context, object : BaseTaskAdapter.OnTaskSelectedCallback {
                     override fun onSelected(task: Task) {
                         if (activity is MainActivity) {
                             (activity as MainActivity).onTaskSelected(task)

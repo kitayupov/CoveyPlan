@@ -67,8 +67,4 @@ class TaskAdapter(
             }
         }
     }
-
-    interface OnTaskSelectedCallback {
-        fun onSelected(task: Task)
-    }
 }

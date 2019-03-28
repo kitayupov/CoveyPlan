@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.kamtayupov.koviplan.R
 import com.kamtayupov.koviplan.data.Task
 
-class TaskSimpleAdapter(private val callback: OnClickCallback) : BaseTaskAdapter<TaskSimpleAdapter.ViewHolder>() {
+class TaskSimpleAdapter(private val callback: OnTaskSelectedCallback) : BaseTaskAdapter<TaskSimpleAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.layout_list_item_task_small, parent, false)
@@ -24,13 +24,9 @@ class TaskSimpleAdapter(private val callback: OnClickCallback) : BaseTaskAdapter
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val name = itemView.findViewById<TextView>(R.id.name_text)
 
-        fun bind(task: Task, callback: OnClickCallback) {
+        fun bind(task: Task, callback: OnTaskSelectedCallback) {
             name.text = task.name
-            itemView.setOnClickListener { callback.onSelect() }
+            itemView.setOnClickListener { callback.onSelected(task) }
         }
-    }
-
-    interface OnClickCallback {
-        fun onSelect()
     }
 }

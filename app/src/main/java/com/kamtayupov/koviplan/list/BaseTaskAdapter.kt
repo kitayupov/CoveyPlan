@@ -13,4 +13,8 @@ abstract class BaseTaskAdapter<T : RecyclerView.ViewHolder> : RecyclerView.Adapt
             notifyDataSetChanged()
         }
     }
+
+    interface OnTaskSelectedCallback {
+        fun onSelected(task: Task)
+    }
 }
