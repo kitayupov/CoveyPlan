@@ -13,7 +13,6 @@ import com.kamtayupov.koviplan.R
 import com.kamtayupov.koviplan.data.Importance
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.data.Urgency
-import com.kamtayupov.koviplan.list.BaseTaskAdapter.Type.USUAL
 import com.kamtayupov.koviplan.repository.TasksViewModel
 
 class TaskFragment : Fragment() {
@@ -22,24 +21,24 @@ class TaskFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val type = arguments?.getSerializable(KEY_LIST_TYPE) ?: return
-        val size = arguments?.getSerializable(KEY_LIST_SIZE) ?: return
+        arguments ?: return
+        val type = arguments!!.getSerializable(KEY_LIST_TYPE)
+        val simple = arguments!!.getBoolean(KEY_SIMPLE)
         val recyclerView = view as RecyclerView
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = when (size) {
-                USUAL -> TaskAdapter(context, object : TaskAdapter.OnTaskSelectedCallback {
+            adapter = if (simple) {
+                TaskSimpleAdapter(object : TaskSimpleAdapter.OnClickCallback {
+                    override fun onSelect() {
+                        (activity as MainActivity).onChapterSelected(type as TaskType)
+                    }
+                })
+            } else {
+                TaskAdapter(context, object : TaskAdapter.OnTaskSelectedCallback {
                     override fun onSelected(task: Task) {
                         (activity as MainActivity).onTaskSelected(task)
                     }
                 })
-                else -> {
-                    TaskSimpleAdapter(object : TaskSimpleAdapter.OnClickCallback {
-                        override fun onSelect() {
-                            (activity as MainActivity).onChapterSelected(type as TaskType)
-                        }
-                    })
-                }
             }
         }
         TasksViewModel.tasks?.observe(this, Observer {
@@ -56,26 +55,22 @@ class TaskFragment : Fragment() {
                 }
             }
         })
-        when (size as BaseTaskAdapter.Type) {
-            USUAL -> activity?.setTitle((type as TaskType).nameResId)
-            else -> {
-            }
-        }
+        if (!simple) activity?.setTitle((type as TaskType).nameResId)
     }
 
     companion object {
         private const val KEY_LIST_TYPE = "TaskFragment.KeyListType"
-        private const val KEY_LIST_SIZE = "TaskFragment.KeyListSize"
+        private const val KEY_SIMPLE = "TaskFragment.KeySimple"
 
-        fun newInstance(taskType: TaskType, size: BaseTaskAdapter.Type): TaskFragment {
+        fun newInstance(taskType: TaskType, simple: Boolean): TaskFragment {
             return TaskFragment().apply {
-                arguments = getArguments(taskType, size)
+                arguments = getArguments(taskType, simple)
             }
         }
 
-        fun getArguments(taskType: TaskType, size: BaseTaskAdapter.Type) = Bundle().apply {
+        fun getArguments(taskType: TaskType, simple: Boolean) = Bundle().apply {
             putSerializable(KEY_LIST_TYPE, taskType)
-            putSerializable(KEY_LIST_SIZE, size)
+            putBoolean(KEY_SIMPLE, simple)
         }
     }
 

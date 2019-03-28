@@ -11,7 +11,6 @@ import androidx.navigation.Navigation
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.editor.EditTaskFragment
 import com.kamtayupov.koviplan.graph.QuartersFragment
-import com.kamtayupov.koviplan.list.BaseTaskAdapter.Type.USUAL
 import com.kamtayupov.koviplan.list.TaskFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
@@ -96,8 +95,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         navController.navigate(
             R.id.taskFragment,
             TaskFragment.getArguments(
-                taskType,
-                USUAL
+                taskType
             )
         )
     }

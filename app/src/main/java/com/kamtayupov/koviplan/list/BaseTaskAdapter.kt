@@ -13,8 +13,4 @@ abstract class BaseTaskAdapter<T : RecyclerView.ViewHolder> : RecyclerView.Adapt
             notifyDataSetChanged()
         }
     }
-
-    enum class Type {
-        SIMPLE, USUAL
-    }
 }

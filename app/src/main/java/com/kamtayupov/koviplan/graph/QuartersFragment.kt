@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.*
 import com.kamtayupov.koviplan.R
-import com.kamtayupov.koviplan.list.BaseTaskAdapter.Type.SIMPLE
 import com.kamtayupov.koviplan.list.TaskFragment
 import com.kamtayupov.koviplan.list.TaskFragment.TaskType
 
@@ -31,7 +30,7 @@ class QuartersFragment : Fragment() {
                             it.layoutResId,
                             TaskFragment.newInstance(
                                 it.taskType,
-                                SIMPLE
+                                true
                             )
                         )
                         .commit()
