@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun onChapterSelected(taskType: TaskFragment.TaskType) {
+    fun onQuarterSelected(taskType: TaskFragment.TaskType) {
         navController.navigate(R.id.taskFragment, TaskFragment.getArguments(taskType = taskType))
     }
 

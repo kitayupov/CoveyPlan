@@ -29,13 +29,14 @@ class TaskFragment : Fragment() {
         val simple = arguments!!.getBoolean(KEY_SIMPLE)
         val completed = arguments!!.getBoolean(KEY_COMPLETED)
         val recyclerView = view as RecyclerView
+        val taskType = if (type is TaskType) type else null
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = if (simple) {
                 TaskSimpleAdapter(object : BaseAdapter.OnItemSelectedCallback<Task> {
                     override fun onSelected(item: Task) {
-                        if (activity is MainActivity && type is TaskType) {
-                            (activity as MainActivity).onChapterSelected(type)
+                        if (activity is MainActivity && taskType != null) {
+                            (activity as MainActivity).onQuarterSelected(taskType)
                         }
                     }
                 })
@@ -51,8 +52,17 @@ class TaskFragment : Fragment() {
                     })
             }
         }
+        if (taskType != null) {
+            if (!simple) activity?.setTitle(taskType.nameResId)
+        } else {
+            if (completed) activity?.setTitle(R.string.nav_menu_completed)
+        }
+        setTaskList(taskType, completed, recyclerView)
+    }
+
+    private fun setTaskList(type: TaskType?, completed: Boolean, recyclerView: RecyclerView) {
         TasksViewModel.tasks?.observe(this, Observer {
-            if (type is TaskType) {
+            if (type != null) {
                 it?.filter {
                     Importance.get(it.priority) == type.importance &&
                             Urgency.get(it.dateTime) == type.urgency &&
@@ -67,11 +77,6 @@ class TaskFragment : Fragment() {
                 it?.filter { it.done == completed }?.sortedBy { it.dateTime }
             }?.apply { (recyclerView.adapter as BaseAdapter<Task, *>).list = ArrayList(this) }
         })
-        if (type is TaskType) {
-            if (!simple) activity?.setTitle(type.nameResId)
-        } else {
-            if (completed) activity?.setTitle(R.string.nav_menu_completed)
-        }
     }
 
     companion object {
