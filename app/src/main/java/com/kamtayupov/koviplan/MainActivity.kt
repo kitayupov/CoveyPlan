@@ -12,8 +12,10 @@ import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.editor.EditTaskFragment
 import com.kamtayupov.koviplan.graph.QuartersFragment
 import com.kamtayupov.koviplan.list.TaskFragment
+import com.kamtayupov.koviplan.room.App
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -50,6 +52,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        val tasksDb = App.instance.database
+        val dao = tasksDb.taskDao()
+        val all = dao.getAll()
+        println(all)
     }
 
     override fun onBackPressed() {
