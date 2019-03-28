@@ -13,6 +13,9 @@ import com.kamtayupov.koviplan.R
 import com.kamtayupov.koviplan.data.Importance
 import com.kamtayupov.koviplan.data.Task
 import com.kamtayupov.koviplan.data.Urgency
+import com.kamtayupov.koviplan.list.adapter.BaseAdapter
+import com.kamtayupov.koviplan.list.adapter.TaskAdapter
+import com.kamtayupov.koviplan.list.adapter.TaskSimpleAdapter
 import com.kamtayupov.koviplan.repository.TasksViewModel
 
 class TaskFragment : Fragment() {
@@ -29,21 +32,23 @@ class TaskFragment : Fragment() {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = if (simple) {
-                TaskSimpleAdapter(object : BaseTaskAdapter.OnTaskSelectedCallback {
-                    override fun onSelected(task: Task) {
+                TaskSimpleAdapter(object : BaseAdapter.OnItemSelectedCallback<Task> {
+                    override fun onSelected(item: Task) {
                         if (activity is MainActivity && type is TaskType) {
                             (activity as MainActivity).onChapterSelected(type)
                         }
                     }
                 })
             } else {
-                TaskAdapter(context, object : BaseTaskAdapter.OnTaskSelectedCallback {
-                    override fun onSelected(task: Task) {
-                        if (activity is MainActivity) {
-                            (activity as MainActivity).onTaskSelected(task)
+                TaskAdapter(
+                    context!!,
+                    object : BaseAdapter.OnItemSelectedCallback<Task> {
+                        override fun onSelected(item: Task) {
+                            if (activity is MainActivity) {
+                                (activity as MainActivity).onTaskSelected(item)
+                            }
                         }
-                    }
-                })
+                    })
             }
         }
         TasksViewModel.tasks?.observe(this, Observer {
@@ -60,9 +65,7 @@ class TaskFragment : Fragment() {
                 }
             } else {
                 it?.filter { it.done == completed }?.sortedBy { it.dateTime }
-            }?.apply {
-                (recyclerView.adapter as BaseTaskAdapter).setList(this)
-            }
+            }?.apply { (recyclerView.adapter as BaseAdapter<Task, *>).list = ArrayList(this) }
         })
         if (!simple) activity?.setTitle((type as TaskType).nameResId)
     }

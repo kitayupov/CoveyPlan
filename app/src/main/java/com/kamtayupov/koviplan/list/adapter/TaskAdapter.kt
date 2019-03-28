@@ -1,7 +1,6 @@
-package com.kamtayupov.koviplan.list
+package com.kamtayupov.koviplan.list.adapter
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,8 +18,8 @@ import org.joda.time.Weeks
 
 class TaskAdapter(
     private val context: Context,
-    private val callback: OnTaskSelectedCallback
-) : BaseTaskAdapter<TaskAdapter.ViewHolder>() {
+    private val callback: OnItemSelectedCallback<Task>
+) : BaseAdapter<Task, TaskAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.layout_list_item_task, parent, false)
@@ -33,13 +32,14 @@ class TaskAdapter(
 
     override fun getItemCount() = list.size
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View) : BaseViewHolder<Task>(view) {
         private val name = itemView.findViewById<TextView>(R.id.name_text)
         private val date = itemView.findViewById<TextView>(R.id.date_text)
         private val priority = itemView.findViewById<RatingBar>(R.id.priority_bar)
         private val done = itemView.findViewById<CheckBox>(R.id.done_check)
 
-        fun bind(context: Context, task: Task, callback: OnTaskSelectedCallback) {
+        fun bind(context: Context, task: Task, callback: OnItemSelectedCallback<Task>) {
+            super.bind(task, callback)
             name.text = task.name
             date.text = getDateString(context, task)
             priority.rating = task.priority.value().toFloat()
@@ -51,7 +51,6 @@ class TaskAdapter(
                     }
                 }
             }
-            itemView.setOnClickListener { callback.onSelected(task) }
         }
 
         private fun getDateString(context: Context, task: Task): String {
