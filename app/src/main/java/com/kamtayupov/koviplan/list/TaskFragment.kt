@@ -67,7 +67,11 @@ class TaskFragment : Fragment() {
                 it?.filter { it.done == completed }?.sortedBy { it.dateTime }
             }?.apply { (recyclerView.adapter as BaseAdapter<Task, *>).list = ArrayList(this) }
         })
-        if (!simple) activity?.setTitle((type as TaskType).nameResId)
+        if (type is TaskType) {
+            if (!simple) activity?.setTitle(type.nameResId)
+        } else {
+            if (completed) activity?.setTitle(R.string.nav_menu_completed)
+        }
     }
 
     companion object {

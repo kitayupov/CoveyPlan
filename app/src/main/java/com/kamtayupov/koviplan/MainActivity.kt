@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 }
             }
             R.id.nav_completed -> {
-
+                navController.navigate(R.id.taskFragment, TaskFragment.getArguments(completed = true))
             }
             R.id.nav_slideshow -> {
 
@@ -92,12 +92,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     fun onChapterSelected(taskType: TaskFragment.TaskType) {
-        navController.navigate(
-            R.id.taskFragment,
-            TaskFragment.getArguments(
-                taskType
-            )
-        )
+        navController.navigate(R.id.taskFragment, TaskFragment.getArguments(taskType = taskType))
     }
 
     fun onTaskSelected(task: Task) {
