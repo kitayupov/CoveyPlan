@@ -1,5 +1,6 @@
 package com.kamtayupov.koviplan.list.adapter
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.RatingBar
 import android.widget.TextView
+import com.kamtayupov.koviplan.MainActivity
 import com.kamtayupov.koviplan.R
 import com.kamtayupov.koviplan.data.DateRange
 import com.kamtayupov.koviplan.data.Task
@@ -46,7 +48,8 @@ class TaskAdapter(
             done.isChecked = task.done
             done.setOnCheckedChangeListener { _, checked ->
                 run {
-                    TasksViewModel.updateItem(task, task.copy(done = checked))
+                    ViewModelProviders.of(context as MainActivity).get(TasksViewModel::class.java)
+                        .updateItem(task, task.copy(done = checked))
                 }
             }
         }

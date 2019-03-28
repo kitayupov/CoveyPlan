@@ -1,5 +1,6 @@
 package com.kamtayupov.koviplan.editor
 
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
@@ -125,7 +126,7 @@ class EditTaskFragment : Fragment() {
     }
 
     fun saveTask() {
-        TasksViewModel.tasks?.value?.apply {
+        ViewModelProviders.of(activity!!).get(TasksViewModel::class.java).tasks?.value?.apply {
             with(indexOf(originalTask)) {
                 if (this == -1) add(editedTask) else set(this, editedTask)
             }

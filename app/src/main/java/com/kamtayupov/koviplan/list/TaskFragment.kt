@@ -1,6 +1,7 @@
 package com.kamtayupov.koviplan.list
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -61,7 +62,7 @@ class TaskFragment : Fragment() {
     }
 
     private fun setTaskList(type: TaskType?, completed: Boolean, recyclerView: RecyclerView) {
-        TasksViewModel.tasks?.observe(this, Observer {
+        ViewModelProviders.of(activity!!).get(TasksViewModel::class.java).tasks?.observe(this, Observer {
             if (type != null) {
                 it?.filter {
                     Importance.get(it.priority) == type.importance &&
