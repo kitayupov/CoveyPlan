@@ -22,5 +22,16 @@ class TasksViewModel : ViewModel() {
                 }
             })
         }
+
+        fun updateItem(task: Task, with: Task) {
+            tasks?.let {
+                it.postValue(
+                    it.value?.apply {
+                        val index = indexOf(task)
+                        if (index != -1) this[index] = with
+                    }
+                )
+            }
+        }
     }
 }

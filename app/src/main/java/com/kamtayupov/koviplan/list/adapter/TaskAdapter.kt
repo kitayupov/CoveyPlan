@@ -46,11 +46,7 @@ class TaskAdapter(
             done.isChecked = task.done
             done.setOnCheckedChangeListener { _, checked ->
                 run {
-                    TasksViewModel.tasks?.let {
-                        it.postValue(it.value?.apply {
-                            this[indexOf(task)].done = checked
-                        })
-                    }
+                    TasksViewModel.updateItem(task, task.copy(done = checked))
                 }
             }
         }
