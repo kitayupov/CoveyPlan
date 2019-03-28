@@ -24,35 +24,44 @@ class TaskFragment : Fragment() {
         arguments ?: return
         val type = arguments!!.getSerializable(KEY_LIST_TYPE)
         val simple = arguments!!.getBoolean(KEY_SIMPLE)
+        val completed = arguments!!.getBoolean(KEY_COMPLETED)
         val recyclerView = view as RecyclerView
         recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = if (simple) {
                 TaskSimpleAdapter(object : TaskSimpleAdapter.OnClickCallback {
                     override fun onSelect() {
-                        (activity as MainActivity).onChapterSelected(type as TaskType)
+                        if (activity is MainActivity && type is TaskType) {
+                            (activity as MainActivity).onChapterSelected(type)
+                        }
                     }
                 })
             } else {
                 TaskAdapter(context, object : TaskAdapter.OnTaskSelectedCallback {
                     override fun onSelected(task: Task) {
-                        (activity as MainActivity).onTaskSelected(task)
+                        if (activity is MainActivity) {
+                            (activity as MainActivity).onTaskSelected(task)
+                        }
                     }
                 })
             }
         }
         TasksViewModel.tasks?.observe(this, Observer {
-            with(type as TaskType) {
+            if (type is TaskType) {
                 it?.filter {
-                    Importance.get(it.priority) == this.importance && Urgency.get(it.dateTime) == this.urgency
+                    Importance.get(it.priority) == type.importance &&
+                            Urgency.get(it.dateTime) == type.urgency &&
+                            it.done == completed
                 }?.let {
                     when (type.urgency) {
                         Urgency.URGENT -> it.sortedBy { it.dateTime }
                         Urgency.NORMAL -> it.sortedByDescending { it.priority }
-                    }.apply {
-                        (recyclerView.adapter as BaseTaskAdapter).setList(this)
                     }
                 }
+            } else {
+                it?.filter { it.done == completed }?.sortedBy { it.dateTime }
+            }?.apply {
+                (recyclerView.adapter as BaseTaskAdapter).setList(this)
             }
         })
         if (!simple) activity?.setTitle((type as TaskType).nameResId)
@@ -61,17 +70,20 @@ class TaskFragment : Fragment() {
     companion object {
         private const val KEY_LIST_TYPE = "TaskFragment.KeyListType"
         private const val KEY_SIMPLE = "TaskFragment.KeySimple"
+        private const val KEY_COMPLETED = "TaskFragment.KeyCompleted"
 
-        fun newInstance(taskType: TaskType, simple: Boolean): TaskFragment {
+        fun newInstance(taskType: TaskType? = null, simple: Boolean = false, completed: Boolean = false): TaskFragment {
             return TaskFragment().apply {
-                arguments = getArguments(taskType, simple)
+                arguments = getArguments(taskType, simple, completed)
             }
         }
 
-        fun getArguments(taskType: TaskType, simple: Boolean) = Bundle().apply {
-            putSerializable(KEY_LIST_TYPE, taskType)
-            putBoolean(KEY_SIMPLE, simple)
-        }
+        fun getArguments(taskType: TaskType? = null, simple: Boolean = false, completed: Boolean = false) =
+            Bundle().apply {
+                putSerializable(KEY_LIST_TYPE, taskType)
+                putBoolean(KEY_SIMPLE, simple)
+                putBoolean(KEY_COMPLETED, completed)
+            }
     }
 
     enum class TaskType(val urgency: Urgency, val importance: Importance, val nameResId: Int) {
