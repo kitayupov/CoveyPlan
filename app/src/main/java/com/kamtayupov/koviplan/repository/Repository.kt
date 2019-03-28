@@ -14,8 +14,8 @@ class Repository {
                         for (c in 0..100) {
                             add(
                                 Task(
-                                    "Task $c",
-                                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
+                                    name = "Task $c",
+                                    description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua",
                                     dateTime = (DateTime.now() + Days.days((Math.random() * 400 - 7).toInt())),
                                     priority = Priority.values()[(Math.random() * Priority.values().size).toInt()],
                                     done = Math.random() > 0.8
