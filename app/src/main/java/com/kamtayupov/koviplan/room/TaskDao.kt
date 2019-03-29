@@ -1,21 +1,22 @@
 package com.kamtayupov.koviplan.room
 
 import android.arch.persistence.room.*
+import com.kamtayupov.koviplan.data.Task
 
 @Dao
 interface TaskDao {
-    @Query("SELECT * FROM TaskEntity")
-    fun getAll(): List<TaskEntity>
+    @Query("SELECT * FROM tasks")
+    fun getAll(): List<Task>
 
-    @Query("SELECT * FROM TaskEntity WHERE id = :id")
-    fun getById(id: Long): TaskEntity
+    @Query("SELECT * FROM tasks WHERE id = :id")
+    fun getById(id: Long): Task
 
-    @Insert
-    fun insert(taskEntity: TaskEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(taskEntity: Task)
 
     @Update
-    fun update(taskEntity: TaskEntity)
+    fun update(taskEntity: Task)
 
     @Delete
-    fun delete(taskEntity: TaskEntity)
+    fun delete(taskEntity: Task)
 }
