@@ -4,7 +4,11 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.TypeConverter
 import android.arch.persistence.room.TypeConverters
+import android.content.Context
 import org.joda.time.DateTime
+import org.joda.time.Days
+import org.joda.time.Months
+import org.joda.time.Weeks
 import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,6 +31,19 @@ data class Task(
     fun dateString() = when (dateTime) {
         DEFAULT_DATE_TIME -> null
         else -> SimpleDateFormat("EEEE dd MMMM yyyy", Locale.getDefault()).format(dateTime.toDate())
+    }
+
+    fun getDateString(context: Context): String {
+        if (dateTime == Task.DEFAULT_DATE_TIME) return toString()
+        with(DateRange.get(dateTime)) {
+            val count = when (this) {
+                DateRange.PAST -> -Days.daysBetween(DateTime.now(), dateTime).days
+                DateRange.MONTH -> Weeks.weeksBetween(DateTime.now(), dateTime).weeks
+                DateRange.YEAR -> Months.monthsBetween(DateTime.now(), dateTime).months
+                else -> Days.daysBetween(DateTime.now(), dateTime).days
+            }
+            return context.resources.getQuantityString(nameResId, count, count)
+        }
     }
 
     class TypeConverters {

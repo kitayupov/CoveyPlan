@@ -1,25 +1,22 @@
 package com.kamtayupov.koviplan.editor
 
 import android.arch.lifecycle.ViewModelProviders
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.*
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import com.kamtayupov.koviplan.R
-import com.kamtayupov.koviplan.data.Priority
 import com.kamtayupov.koviplan.data.Task
+import com.kamtayupov.koviplan.databinding.FragmentEditTaskBinding
 import com.kamtayupov.koviplan.repository.TasksViewModel
 import org.joda.time.DateTime
 import java.util.*
 
 class EditTaskFragment : Fragment() {
-    private lateinit var nameText: TextView
-    private lateinit var descriptionText: TextView
     private lateinit var dateText: TextView
     private lateinit var priorityBar: RatingBar
     private lateinit var calendarImage: ImageView
@@ -27,6 +24,7 @@ class EditTaskFragment : Fragment() {
     private lateinit var saveFab: FloatingActionButton
     private lateinit var originalTask: Task
     private lateinit var editedTask: Task
+    private lateinit var binding: FragmentEditTaskBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +36,11 @@ class EditTaskFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_edit_task, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_task, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        nameText = view.findViewById(R.id.task_name_text)
-        descriptionText = view.findViewById(R.id.task_description_text)
         dateText = view.findViewById(R.id.task_date_text)
         calendarImage = view.findViewById(R.id.task_calendar_image)
         priorityBar = view.findViewById(R.id.task_priority_bar)
@@ -57,36 +54,12 @@ class EditTaskFragment : Fragment() {
         }
         originalTask = if (task is Task) task else Task()
         editedTask = originalTask.copy()
-        updateFields()
+        if (task is Task) binding.task = editedTask
         initFieldListeners()
         initFabs()
     }
 
-    private fun updateFields() {
-        nameText.text = editedTask.name
-        descriptionText.text = editedTask.description
-        dateText.text = editedTask.dateString()
-        priorityBar.rating = editedTask.priority.value().toFloat()
-    }
-
     private fun initFieldListeners() {
-        nameText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                editedTask.name = s.toString()
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-        descriptionText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                editedTask.description = s.toString()
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-        })
-        priorityBar.setOnRatingBarChangeListener { _, rating, _ -> editedTask.priority = Priority.get(rating.toInt()) }
         for (v in arrayOf(dateText, calendarImage)) {
             v.setOnClickListener {
                 val dialog =
