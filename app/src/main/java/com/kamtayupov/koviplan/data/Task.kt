@@ -5,11 +5,12 @@ import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.TypeConverter
 import android.arch.persistence.room.TypeConverters
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import org.joda.time.DateTime
 import org.joda.time.Days
 import org.joda.time.Months
 import org.joda.time.Weeks
-import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,10 +24,15 @@ data class Task(
     var dateTime: DateTime = DEFAULT_DATE_TIME,
     var priority: Priority = Priority.UNKNOWN,
     var done: Boolean = false
-) : Serializable {
-    companion object {
-        val DEFAULT_DATE_TIME = DateTime(-1)
-    }
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readLong(),
+        parcel.readString() ?: "",
+        parcel.readString() ?: "",
+        DateTime(parcel.readLong()),
+        Priority.get(parcel.readInt()),
+        parcel.readByte() != 0.toByte()
+    )
 
     fun dateString() = when (dateTime) {
         DEFAULT_DATE_TIME -> null
@@ -58,5 +64,28 @@ data class Task(
 
         @TypeConverter
         fun toPriority(value: Int) = Priority.get(value)
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeValue(id)
+        parcel.writeString(name)
+        parcel.writeString(description)
+        parcel.writeByte(if (done) 1 else 0)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Task> {
+        val DEFAULT_DATE_TIME = DateTime(-1)
+
+        override fun createFromParcel(parcel: Parcel): Task {
+            return Task(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Task?> {
+            return arrayOfNulls(size)
+        }
     }
 }

@@ -44,14 +44,8 @@ class EditTaskFragment : Fragment() {
         dateText = view.findViewById(R.id.task_date_text)
         calendarImage = view.findViewById(R.id.task_calendar_image)
         priorityBar = view.findViewById(R.id.task_priority_bar)
-        val task = arguments?.getSerializable(KEY_TASK)
-        activity?.apply {
-            if (task is Task) {
-                title = task.name
-            } else {
-                setTitle(R.string.title_edit_task)
-            }
-        }
+        val task = arguments?.getParcelable<Task>(KEY_TASK)
+        activity?.title = task?.name ?: getString(R.string.title_edit_task)
         originalTask = if (task is Task) task else Task()
         editedTask = originalTask.copy()
         if (task is Task) binding.task = editedTask
@@ -117,7 +111,7 @@ class EditTaskFragment : Fragment() {
         private const val KEY_TASK = "EditTaskFragment.KeyTask"
 
         fun getArguments(task: Task) = Bundle().apply {
-            putSerializable(KEY_TASK, task)
+            putParcelable(KEY_TASK, task)
         }
     }
 }
